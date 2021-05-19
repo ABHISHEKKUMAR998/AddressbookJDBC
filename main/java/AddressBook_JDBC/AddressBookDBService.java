@@ -76,7 +76,7 @@ public class AddressBookDBService {
 				String zip = resultSet.getString("Zip");
 				String phoneNo = resultSet.getString("Phone_Number");
 				String email = resultSet.getString("Email");
-				addressBookData.add(new AddressBookData(firstName, lastName, address, city, state, zip, phoneNo, email));
+				addressBookData.add(new AddressBookData(firstName, lastName, address, city, state,  phoneNo, email));
 			}
 		} catch (SQLException e) {
 			throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
@@ -122,6 +122,20 @@ public class AddressBookDBService {
 			throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
 		}
 		return addressBookList;
+	}
+	public int readDataBasedOnCity(String total, String city) throws AddressBookException {
+		int count = 0;
+		String query = String.format("select  state='%s' from addressbook where City = '%s' group by City;"
+				, total, city);
+		try (Connection connection = this.getConnection()) {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+			resultSet.next();
+			count = resultSet.getInt(1);
+		} catch (SQLException e) {
+			throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
+		}
+		return count;
 	}
 
 

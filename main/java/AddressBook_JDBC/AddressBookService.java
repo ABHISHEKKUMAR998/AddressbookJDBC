@@ -59,5 +59,9 @@ public class AddressBookService {
 			throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
 		}
 	}
+	public int readAddressBookData(String function, String city) throws AddressBookException {
+		return addressBookDBService.readDataBasedOnCity(function, city);
+	}
+
 
 }
